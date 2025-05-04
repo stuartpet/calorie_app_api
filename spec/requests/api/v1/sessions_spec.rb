@@ -12,7 +12,7 @@ RSpec.describe 'Sessions', type: :request do
   end
 
   describe 'GET /api/v1/me' do
-    let(:user) { User.create!(email: 'me@example.com', auth_token: 'abc123') }
+    let(:user) { create(:user, email: 'me@example.com', auth_token: 'abc123') }
 
     before { user }
     

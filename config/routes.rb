@@ -3,7 +3,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       get "calorie_calculator/calculate"
       post "login", to: "sessions#create"
+      post 'signup', to: 'registrations#create'
       get "me", to: "sessions#show"
+      put '/me', to: 'users#update'
+      get '/me', to: 'users#show'
+      delete 'logout', to: 'sessions#destroy'
       post "calories/calculate", to: "calorie_calculator#calculate"
     end
   end
