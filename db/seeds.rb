@@ -7,3 +7,8 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+require_relative '../app/services/food_seeder_service'
+
+FoodSeederService.seed_from_csv(Rails.root.join("db/data/McCance_Widdowsons_Composition_of_Foods_Integrated_Dataset_2021_2.csv"))
+
