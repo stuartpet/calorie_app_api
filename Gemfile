@@ -23,7 +23,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 # Gemfile
-gem 'ruby-openai', '~> 5.0', require: 'openai'
+gem 'ruby-openai', '~> 8.1', require: 'openai'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'roo'
 gem 'mini_magick'
