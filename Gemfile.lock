@@ -121,7 +121,9 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
+    ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     fuzzy_match (2.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -331,6 +333,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  faraday (~> 2.13)
   fuzzy_match
   httparty
   image_processing (~> 1.12)
