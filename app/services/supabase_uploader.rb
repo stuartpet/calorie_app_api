@@ -1,19 +1,26 @@
-require 'faraday'
-
+# app/services/supabase_uploader.rb
 class SupabaseUploader
-  def self.upload(file_path, filename)
-    url = "#{ENV['SUPABASE_PROJECT_URL']}/storage/v1/object/#{ENV['SUPABASE_BUCKET']}/#{filename}"
+  SUPABASE_URL = Rails.application.credentials.supabase[:url]
+  SUPABASE_KEY = Rails.application.credentials.supabase[:service_role_key]
+  BUCKET = 'foodimages'
 
-    response = Faraday.put(url) do |req|
-      req.headers['Authorization'] = "Bearer #{ENV['SUPABASE_SERVICE_KEY']}"
-      req.headers['Content-Type'] = 'application/octet-stream'
-      req.body = File.read(file_path)
-    end
+  def self.upload(io, filename)
+    conn = Faraday.new(
+      url: "#{SUPABASE_URL}/storage/v1/object",
+      headers: {
+        'Authorization' => "Bearer #{SUPABASE_KEY}",
+        'Content-Type' => 'application/octet-stream'
+      }
+    )
+
+    path = "#{BUCKET}/#{SecureRandom.hex}/#{filename}"
+
+    response = conn.put(path) { |req| req.body = io.read }
 
     if response.success?
-      "#{ENV['SUPABASE_PROJECT_URL']}/storage/v1/object/public/#{ENV['SUPABASE_BUCKET']}/#{filename}"
+      "#{SUPABASE_URL}/storage/v1/object/public/#{path}"
     else
-      Rails.logger.error "Supabase upload failed: #{response.status} - #{response.body}"
+      Rails.logger.error("❌ Supabase upload failed: #{response.status} - #{response.body}")
       nil
     end
   end

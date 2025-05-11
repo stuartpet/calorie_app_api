@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_06_214537) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_11_122859) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_06_214537) do
     t.string "image_url"
     t.boolean "user_generated"
     t.string "category"
+    t.string "supabase_image_url"
   end
 
   create_table "meals", force: :cascade do |t|
