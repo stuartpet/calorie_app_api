@@ -1,7 +1,19 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      resources :food_items, only: [:index, :show, :create, :update]
+
+      resources :meals, only: [:create] do
+        collection do
+          get :today
+        end
+      end
+
+      resources :meals, only: [:update, :destroy], param: :id
+
       get "calorie_calculator/calculate"
+      post "photo_meal/analyze", to: "photo_meals#analyze"
+      post 'photo_meals/analyze', to: 'photo_meals#analyze'
       post "login", to: "sessions#create"
       post 'signup', to: 'registrations#create'
       get "me", to: "sessions#show"
@@ -11,13 +23,5 @@ Rails.application.routes.draw do
       post "calories/calculate", to: "calorie_calculator#calculate"
     end
   end
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
+

@@ -5,6 +5,8 @@ class SupabaseUploader
   BUCKET = 'foodimages'
 
   def self.upload(io, filename)
+    return if exists?(filename)
+
     conn = Faraday.new(
       url: "#{SUPABASE_URL}/storage/v1/object",
       headers: {
@@ -13,15 +15,22 @@ class SupabaseUploader
       }
     )
 
-    path = "#{BUCKET}/#{SecureRandom.hex}/#{filename}"
+    path = "#{BUCKET}/#{filename}"
+    res = conn.put(path) { |req| req.body = io.read }
 
-    response = conn.put(path) { |req| req.body = io.read }
+    res.success? ? "#{SUPABASE_URL}/storage/v1/object/public/#{path}" : nil
+  end
 
-    if response.success?
-      "#{SUPABASE_URL}/storage/v1/object/public/#{path}"
-    else
-      Rails.logger.error("❌ Supabase upload failed: #{response.status} - #{response.body}")
-      nil
-    end
+  def self.exists?(filename)
+    conn = Faraday.new(
+      url: "#{SUPABASE_URL}/storage/v1/object/public",
+      headers: {
+        'Authorization' => "Bearer #{SUPABASE_KEY}"
+      }
+    )
+
+    path = "#{BUCKET}/#{filename}"
+    res = conn.head(path)
+    res.success?
   end
 end
